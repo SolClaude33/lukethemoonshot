@@ -105,9 +105,13 @@
     margin: 0 0 13px; color: var(--orange); font: 700 .72rem/1.2 var(--mono);
     letter-spacing: .14em; text-transform: uppercase;
   }
-  .hero h1 { margin: 0; font-family: var(--display); font-size: clamp(3.8rem, 5.4vw, 6rem); line-height: .82; letter-spacing: -.055em; }
+  .hero h1 {
+    margin: 0; font-family: var(--sans); font-size: clamp(3.55rem, 5vw, 5.65rem);
+    font-weight: 900; line-height: .92; letter-spacing: -.04em; text-transform: uppercase;
+  }
   .hero h1 span, .hero h1 strong { display: block; }
-  .hero h1 strong { color: var(--orange); font-weight: inherit; }
+  .hero h1 span { letter-spacing: -.025em; }
+  .hero h1 strong { color: var(--orange); font-weight: 900; letter-spacing: -.045em; }
   .hero-tagline { margin: 31px 0 27px; color: #b7b4b1; font: 1.28rem/1.48 var(--mono); letter-spacing: .02em; }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
   .hero-values {
@@ -224,7 +228,7 @@
     .hero-content { order: 1; min-height: 0; padding-block: 48px 25px; }
     .hero-copy { width: 100%; }
     .eyebrow { margin-bottom: 10px; }
-    .hero h1 { font-size: clamp(3.25rem, 15vw, 4.5rem); line-height: .82; }
+    .hero h1 { font-size: clamp(2.9rem, 13.3vw, 4rem); line-height: .92; }
     .hero-tagline { margin: 25px 0 24px; font-size: 1rem; }
     .hero-actions { display: grid; grid-template-columns: 1fr 1fr; }
     .button { min-height: 48px; padding-inline: 17px; font-size: .88rem; }

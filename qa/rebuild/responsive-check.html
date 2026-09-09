@@ -37,6 +37,7 @@
     const reports = document.querySelector('#reports');
     const frames = document.querySelector('#frames');
     const summary = document.querySelector('#summary');
+    const runVersion = Date.now();
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     function row(label, passed, detail = '') {
@@ -59,7 +60,7 @@
       const frame = document.createElement('iframe');
       frame.width = spec.width;
       frame.height = spec.height;
-      frame.src = `/index.html?qa=${spec.width}`;
+      frame.src = `/index.html?qa=${spec.width}&v=${runVersion}`;
       frames.append(frame);
       await new Promise((resolve, reject) => {
         const timer = setTimeout(() => reject(new Error('load timeout')), 8000);
@@ -104,6 +105,13 @@
       checks.push(['benefits background is applied', benefitsBackground]);
       const heroNameFits = doc.querySelector('#hero-title').scrollWidth <= doc.querySelector('.hero-copy').clientWidth + 1;
       checks.push(['Luke the Moonshot hero name fits', heroNameFits, `${doc.querySelector('#hero-title').scrollWidth}/${doc.querySelector('.hero-copy').clientWidth}`]);
+      const heroType = win.getComputedStyle(doc.querySelector('#hero-title'));
+      const heroLineRatio = Number.parseFloat(heroType.lineHeight) / Number.parseFloat(heroType.fontSize);
+      const heroTypeIsClean = !/Impact|Haettenschweiler/i.test(heroType.fontFamily)
+        && Number.parseInt(heroType.fontWeight, 10) >= 800
+        && heroLineRatio >= .88
+        && heroType.textTransform === 'uppercase';
+      checks.push(['hero typography is clean and deliberate', heroTypeIsClean, `${heroType.fontFamily}; weight ${heroType.fontWeight}; line ${heroLineRatio.toFixed(2)}; ${heroType.textTransform}`]);
       const socialLabels = [...doc.querySelectorAll('.socials a')].map((link) => link.getAttribute('aria-label'));
       const socialSetIsClean = socialLabels.length === 2 && !socialLabels.some((label) => /telegram|discord/i.test(label || ''));
       checks.push(['Telegram and Discord controls removed', socialSetIsClean, socialLabels.join(', ')]);
