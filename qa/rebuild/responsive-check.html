@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luke the Moonshot — responsive QA</title>
+  <style>
+    .lead{color:#aaa}.summary{font-weight:900;font-size:1.1rem;margin:18px 0}.case{border:1px solid #31343a;border-radius:12px;margin:14px 0;background:#121419;overflow:hidden}.case h2{font-size:.9rem;margin:0;padding:12px 14px;border-bottom:1px solid #31343a}.results{padding:12px 14px;display:grid;gap:7px}.pass{color:#76dc91}.fail{color:#ff806e}.pending{color:#ffb86a}.frame-host{position:fixed;left:0;top:0;z-index:-1;opacity:0;pointer-events:none}.frame-host iframe{border:0}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Luke the Moonshot responsive QA</h1>
+    <p class="lead">Same-origin checks at fixed desktop, laptop, tablet and mobile viewport widths.</p>
+    <p class="summary pending" id="summary">Running…</p>
+    <div id="reports"></div>
+    <div class="frame-host" id="frames" aria-hidden="true"></div>
+  </main>
+  <script>
+    const cases = [
+      { name: 'Full HD', width: 1920, height: 1080 },
+      { name: 'QHD', width: 2560, height: 1440 },
+      { name: 'Desktop', width: 1440, height: 1000 },
+      { name: 'Laptop', width: 1024, height: 900 },
+      { name: 'Tablet', width: 768, height: 900 },
+      { name: 'Mobile', width: 390, height: 844 }
+    ];
+    const expectedAssets = [
+      '/assets/generated/brand-mark.webp',
+      '/assets/generated/benefits-background.webp',
+      '/assets/generated/hero-scene.webp',
+      '/assets/generated/cat-closeup.webp',
+      '/assets/generated/community-scene.webp',
+      '/assets/generated/favicon-64.png',
+      '/assets/generated/apple-touch-icon.png'
+    ];
+    const reports = document.querySelector('#reports');
+    const frames = document.querySelector('#frames');
+    const summary = document.querySelector('#summary');
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    function row(label, passed, detail = '') {
+      return `<div class="${passed ? 'pass' : 'fail'}">${passed ? 'PASS' : 'FAIL'} — ${label}${detail ? `: ${detail}` : ''}</div>`;
+    }
+
+    async function checkAsset(url) {
+      try {
+        const response = await fetch(url, { cache: 'no-store' });
+        return response.ok && Number(response.headers.get('content-length') || 1) > 0;
+      } catch { return false; }
+    }
+
+    async function runCase(spec) {
+      const shell = document.createElement('section');
+      shell.className = 'case';
+      shell.innerHTML = `<h2>${spec.name} — ${spec.width}×${spec.height}</h2><div class="results pending">Running…</div>`;
+      reports.append(shell);
+
+      const frame = document.createElement('iframe');
+      frame.width = spec.width;
+      frame.height = spec.height;
+      frame.src = `/index.html?qa=${spec.width}`;
+      frames.append(frame);
+      await new Promise((resolve, reject) => {
+        const timer = setTimeout(() => reject(new Error('load timeout')), 8000);
+        frame.addEventListener('load', () => { clearTimeout(timer); resolve(); }, { once: true });
+      });
+
+      const win = frame.contentWindow;
+      const doc = frame.contentDocument;
+      const imgs = [...doc.images];
+      const authoredLazyPolicy = [...doc.querySelectorAll('.about-media img, .community-art img')].every((img) => img.loading === 'lazy') && !doc.querySelector('.hero-art').hasAttribute('loading');
+      imgs.filter((img) => img.loading === 'lazy').forEach((img) => { img.loading = 'eager'; });
+      const scrollHeight = doc.documentElement.scrollHeight;
+      const step = Math.max(320, Math.floor(spec.height * .72));
+      for (let y = 0; y <= scrollHeight; y += step) {
+        win.scrollTo(0, y);
+        await delay(90);
+      }
+      win.scrollTo(0, scrollHeight);
+      await delay(300);
+      await Promise.race([
+        Promise.allSettled(imgs.map((img) => img.decode ? img.decode() : Promise.resolve())),
+        delay(3000)
+      ]);
+
+      const checks = [];
+      const viewportMatches = Math.abs(doc.documentElement.clientWidth - spec.width) <= 20;
+      checks.push(['viewport width (scrollbar allowance)', viewportMatches, `${doc.documentElement.clientWidth}px content / ${spec.width}px frame`]);
+      const noOverflow = doc.documentElement.scrollWidth <= doc.documentElement.clientWidth + 1;
+      checks.push(['no horizontal overflow', noOverflow, `${doc.documentElement.scrollWidth}/${doc.documentElement.clientWidth}`]);
+      const allImages = imgs.length === 4 && imgs.every((img) => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0);
+      checks.push(['four page images decoded', allImages, imgs.map((img) => `${img.naturalWidth}×${img.naturalHeight}`).join(', ')]);
+      const sectionsFit = [...doc.querySelectorAll('header, main > section, footer')].every((el) => el.getBoundingClientRect().width <= spec.width + 1);
+      checks.push(['major sections fit viewport', sectionsFit]);
+      const anchorsValid = [...doc.querySelectorAll('a[href^="#"]')].every((link) => link.hash && doc.querySelector(link.hash));
+      checks.push(['internal anchors resolve', anchorsValid]);
+      const hasHeadings = Boolean(doc.querySelector('h1#hero-title') && doc.querySelector('h2#about-title') && doc.querySelector('h2#community-title'));
+      checks.push(['heading structure present', hasHeadings]);
+      const meaningfulAlt = [...doc.querySelectorAll('.about-media img, .community-art img')].every((img) => img.alt.trim().length > 0);
+      checks.push(['meaningful artwork has alt text', meaningfulAlt]);
+      checks.push(['hero eager / lower art lazy', authoredLazyPolicy]);
+      const benefitsBackground = win.getComputedStyle(doc.querySelector('.features')).backgroundImage.includes('benefits-background.webp');
+      checks.push(['benefits background is applied', benefitsBackground]);
+      const heroNameFits = doc.querySelector('#hero-title').scrollWidth <= doc.querySelector('.hero-copy').clientWidth + 1;
+      checks.push(['Luke the Moonshot hero name fits', heroNameFits, `${doc.querySelector('#hero-title').scrollWidth}/${doc.querySelector('.hero-copy').clientWidth}`]);
+      const socialLabels = [...doc.querySelectorAll('.socials a')].map((link) => link.getAttribute('aria-label'));
+      const socialSetIsClean = socialLabels.length === 2 && !socialLabels.some((label) => /telegram|discord/i.test(label || ''));
+      checks.push(['Telegram and Discord controls removed', socialSetIsClean, socialLabels.join(', ')]);
+
+      if (spec.width >= 1600) {
+        const sectionHeights = {
+          hero: doc.querySelector('.hero').getBoundingClientRect().height,
+          features: doc.querySelector('.features').getBoundingClientRect().height,
+          about: doc.querySelector('.about').getBoundingClientRect().height,
+          community: doc.querySelector('.community').getBoundingClientRect().height
+        };
+        const wideHeightsPass = sectionHeights.hero >= spec.height * .62
+          && sectionHeights.features >= spec.height * .30
+          && sectionHeights.about >= spec.height * .42
+          && sectionHeights.community >= spec.height * .45;
+        checks.push(['wide-screen section heights', wideHeightsPass, Object.entries(sectionHeights).map(([key, value]) => `${key}=${Math.round(value)}px`).join(', ')]);
+
+        const centeredArt = win.getComputedStyle(doc.querySelector('.hero-art')).objectPosition === '50% 50%'
+          && win.getComputedStyle(doc.querySelector('.about-media img')).objectPosition === '50% 50%'
+          && win.getComputedStyle(doc.querySelector('.community-art img')).objectPosition === '50% 50%';
+        checks.push(['wide-screen artwork is centered', centeredArt]);
+
+        const backgroundPosition = win.getComputedStyle(doc.querySelector('.features')).backgroundPosition;
+        checks.push(['benefits artwork is vertically centered', backgroundPosition.includes('72%'), backgroundPosition]);
+
+        const wideArtCapped = doc.querySelector('.hero-art').getBoundingClientRect().width <= 2201
+          && doc.querySelector('.community-art img').getBoundingClientRect().width <= 2201;
+        checks.push(['wide artwork width is capped', wideArtCapped]);
+      }
+
+      const toggle = doc.querySelector('.menu-toggle');
+      const nav = doc.querySelector('.site-nav');
+      const isNarrow = spec.width <= 920;
+      const toggleVisible = win.getComputedStyle(toggle).display !== 'none';
+      checks.push(['responsive navigation mode', toggleVisible === isNarrow, toggleVisible ? 'toggle' : 'desktop nav']);
+      if (isNarrow) {
+        toggle.click();
+        checks.push(['mobile menu opens', toggle.getAttribute('aria-expanded') === 'true' && nav.classList.contains('open')]);
+        win.dispatchEvent(new win.KeyboardEvent('keydown', { key: 'Escape' }));
+        checks.push(['Escape closes menu', toggle.getAttribute('aria-expanded') === 'false' && !nav.classList.contains('open')]);
+      }
+
+      shell.querySelector('.results').className = 'results';
+      shell.querySelector('.results').innerHTML = checks.map(([label, pass, detail]) => row(label, pass, detail)).join('');
+      return { passed: checks.every(([, pass]) => pass), checks: checks.length };
+    }
+
+    (async () => {
+      const assetChecks = await Promise.all(expectedAssets.map(checkAsset));
+      const assetCase = document.createElement('section');
+      assetCase.className = 'case';
+      assetCase.innerHTML = `<h2>Production assets</h2><div class="results">${expectedAssets.map((asset, index) => row(asset, assetChecks[index])).join('')}</div>`;
+      reports.append(assetCase);
+
+      const results = [];
+      for (const spec of cases) {
+        try { results.push(await runCase(spec)); }
+        catch (error) {
+          results.push({ passed: false, checks: 0 });
+          reports.insertAdjacentHTML('beforeend', `<section class="case"><h2>${spec.name}</h2><div class="results fail">FAIL — ${error.message}</div></section>`);
+        }
+      }
+      const passed = assetChecks.every(Boolean) && results.every((result) => result.passed);
+      const total = results.reduce((sum, result) => sum + result.checks, expectedAssets.length);
+      summary.className = `summary ${passed ? 'pass' : 'fail'}`;
+      summary.textContent = `${passed ? 'PASS' : 'FAIL'} — ${total} checks across ${cases.length} viewports and ${expectedAssets.length} assets.`;
+      document.title = `${passed ? 'PASS' : 'FAIL'} — Luke the Moonshot responsive QA`;
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Dependencies and generated deployment output
+node_modules/
+dist/
+
+# Local environment files; keep the documented template
+.env
+.env.*
+!.env.example
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Large intermediate image-generation outputs are not deployed
+assets/generated-raw/

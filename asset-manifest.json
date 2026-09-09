@@ -1,0 +1,106 @@
+{
+  "project": "Luke the Moonshot landing",
+  "method": "Original generation guided by supplied references; no source pixels extracted",
+  "generator": {
+    "provider": "openai-codex",
+    "model": "gpt-image-2-medium"
+  },
+  "references": [
+    {
+      "path": "C:/Users/nicol/Desktop/proyectos xd/monero cat/pagina.png",
+      "role": "Canonical full-page composition, palette and print-illustration direction",
+      "dimensions": "1024x1536",
+      "format": "PNG"
+    },
+    {
+      "path": "C:/Users/nicol/AppData/Roaming/Hermes/composer-images/image_cad265.png",
+      "role": "Canonical mascot identity",
+      "dimensions": "512x512",
+      "format": "PNG"
+    }
+  ],
+  "assets": [
+    {
+      "name": "hero-scene",
+      "role": "Hero background",
+      "source": "assets/generated-raw/hero-scene-source.png",
+      "source_dimensions": "1672x941",
+      "source_format": "PNG RGB, opaque",
+      "source_sha256": "d3d097e9ed11f29d4ea2cabc3fdef29be9b07ec626a87359d0476047a03d0ac5",
+      "output": "assets/generated/hero-scene.webp",
+      "output_dimensions": "1672x941",
+      "output_format": "WebP RGB, opaque",
+      "output_sha256": "4420ac81db3d4ff38c7043668d53d452aebfa2013ef31032e95ede3e9eb75855",
+      "loading": "preload + fetchpriority high"
+    },
+    {
+      "name": "cat-closeup",
+      "role": "About-section close-up",
+      "source": "assets/generated-raw/cat-closeup-source.png",
+      "source_dimensions": "1672x941",
+      "source_format": "PNG RGB, opaque",
+      "source_sha256": "694cdd9d07962cfe8e766eb6f0241ed667e319b3ebb8c9579bd2113b67aa3656",
+      "output": "assets/generated/cat-closeup.webp",
+      "output_dimensions": "1672x941",
+      "output_format": "WebP RGB, opaque",
+      "output_sha256": "b17f874e4c959eb29d34d93e1472d70951195640e57c92f81eac6538a3d3ea32",
+      "loading": "lazy"
+    },
+    {
+      "name": "community-scene",
+      "role": "Community-section background",
+      "source": "assets/generated-raw/community-scene-source.png",
+      "source_dimensions": "1672x941",
+      "source_format": "PNG RGB, opaque",
+      "source_sha256": "e3b612bb7cd6311cf738e97a4a8820181bd37d2fbaa7d747c40636b3513fbf41",
+      "output": "assets/generated/community-scene.webp",
+      "output_dimensions": "1672x941",
+      "output_format": "WebP RGB, opaque",
+      "output_sha256": "a995a980bc52b3e8792584b14eea5fee17622566c94be8453a4f3e0fba36d160",
+      "loading": "lazy"
+    },
+    {
+      "name": "benefits-background",
+      "role": "Decorative background behind the four live benefit columns",
+      "source": "assets/generated-raw/benefits-background-source.png",
+      "source_dimensions": "1672x941",
+      "source_format": "PNG RGB, opaque",
+      "source_sha256": "0aff51df44d35ae7af2d13ce5133ba289e123f45695e6d898d41e547c55fd5b6",
+      "output": "assets/generated/benefits-background.webp",
+      "output_dimensions": "1672x941",
+      "output_format": "WebP RGB, opaque",
+      "output_sha256": "e2a6fec6bbe573df74a4c35c67d021fcf7565ae6e12558bce6870e02dd0738e5",
+      "loading": "CSS section background"
+    },
+    {
+      "name": "brand-mark",
+      "role": "Header mark and icon source",
+      "source": "assets/generated-raw/brand-mark-source.png",
+      "source_dimensions": "1254x1254",
+      "source_format": "PNG RGB, opaque",
+      "source_sha256": "9f955bd7cba2c87706cdac7f2b812ce3fe965b86234e34d55da3e0b166116126",
+      "outputs": [
+        {
+          "path": "assets/generated/brand-mark.webp",
+          "dimensions": "512x512",
+          "format": "WebP RGB, opaque",
+          "sha256": "48a1250619cdc39941adecc479aad1b68afbe4fe441084d455c24b0e55b6b3ce"
+        },
+        {
+          "path": "assets/generated/favicon-64.png",
+          "dimensions": "64x64",
+          "format": "PNG RGB, opaque",
+          "sha256": "d5ed19fef87d820bdfc8151bf07b05096e4051b9e12a275080d36cdb24c0f1c0"
+        },
+        {
+          "path": "assets/generated/apple-touch-icon.png",
+          "dimensions": "180x180",
+          "format": "PNG RGB, opaque",
+          "sha256": "2408f369c812e8d9da02fbb1636e1686fac697f67f6e8f1dbb1a9a35cebd14f7"
+        }
+      ]
+    }
+  ],
+  "live_ui_policy": "Navigation, headings, copy, buttons, values, feature icons and social controls remain HTML or inline SVG; the benefits artwork is decorative background only and no mutable UI is rasterized.",
+  "legacy_note": "Pre-existing SVGs and old QA captures remain on disk but are not referenced by the rebuilt page."
+}

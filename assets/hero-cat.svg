@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 700" role="img" aria-labelledby="title desc">
+<title id="title">Monero Cat hero mascot</title><desc id="desc">Original orange tabby cat seated confidently in the dark, wearing a Monero medallion.</desc>
+<defs>
+  <radialGradient id="halo" cx="50%" cy="46%" r="52%"><stop stop-color="#D48A43" stop-opacity=".26"/><stop offset="1" stop-color="#D48A43" stop-opacity="0"/></radialGradient>
+  <linearGradient id="fur" x1="140" y1="66" x2="570" y2="633" gradientUnits="userSpaceOnUse"><stop stop-color="#F0C27D"/><stop offset=".34" stop-color="#D88B43"/><stop offset=".75" stop-color="#B6652B"/><stop offset="1" stop-color="#7B3E1D"/></linearGradient>
+  <linearGradient id="chest" x1="348" y1="280" x2="390" y2="590"><stop stop-color="#F4D69F"/><stop offset="1" stop-color="#C9803B"/></linearGradient>
+  <linearGradient id="tail" x1="555" y1="410" x2="696" y2="640"><stop stop-color="#D3873F"/><stop offset="1" stop-color="#703819"/></linearGradient>
+  <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="grain" x="-15%" y="-15%" width="130%" height="130%"><feTurbulence baseFrequency=".74" numOctaves="3" seed="11" type="fractalNoise" result="n"/><feComposite in="n" in2="SourceGraphic" operator="in" result="noise"/><feBlend in="SourceGraphic" in2="noise" mode="soft-light"/></filter>
+</defs>
+<ellipse cx="393" cy="356" rx="326" ry="319" fill="url(#halo)"/>
+<g opacity=".38" fill="none" stroke="#C77B34">
+  <circle cx="387" cy="335" r="257" stroke-width="1" stroke-dasharray="3 15"/><circle cx="387" cy="335" r="296" stroke-width=".7" stroke-dasharray="1 20"/>
+  <path d="M81 188h78M605 142h76M52 470h104M612 497h92" stroke-width="1"/>
+</g>
+<ellipse cx="410" cy="641" rx="245" ry="33" fill="#050607" opacity=".82" filter="url(#shadow)"/>
+<path d="M527 423c83 18 148 69 145 135-2 60-67 93-132 62 61-3 89-35 75-66-15-34-60-43-104-36Z" fill="url(#tail)" stroke="#20140E" stroke-width="8"/>
+<path d="M280 334c-54 56-84 173-59 268 10 38 47 53 93 34 24-10 53-14 89-12 50 2 91 18 128 5 40-14 51-52 38-104-23-96-73-171-140-197Z" fill="url(#fur)" stroke="#21140D" stroke-width="9" filter="url(#grain)"/>
+<path d="M327 331c-16 77-13 194 58 284 60-100 55-214 28-286Z" fill="url(#chest)" opacity=".92"/>
+<path d="M214 164 251 43l93 77c31-10 64-10 95 0l94-77 35 125c38 51 35 127-9 174-48 52-119 67-184 59-75 9-146-21-180-77-32-53-25-116 19-160Z" fill="url(#fur)" stroke="#21140D" stroke-width="10" stroke-linejoin="round" filter="url(#grain)"/>
+<path d="m240 145 25-76 58 59c-34 5-59 11-83 17Zm268 0-25-76-58 59c34 5 59 11 83 17Z" fill="#5C321E"/>
+<path d="m250 126 18-43 31 38Z" fill="#E7A96C"/><path d="m500 126-18-43-31 38Z" fill="#E7A96C"/>
+<path d="M251 184c37-34 77-40 114-13-21 33-81 40-114 13Zm268 0c-37-34-77-40-114-13 21 33 81 40 114 13Z" fill="#151211"/>
+<path d="M272 182c26-17 49-17 71-5-18 14-47 18-71 5Zm226 0c-26-17-49-17-71-5 18 14 47 18 71 5Z" fill="#E9B54A"/>
+<ellipse cx="312" cy="180" rx="6" ry="15" fill="#080908"/><ellipse cx="458" cy="180" rx="6" ry="15" fill="#080908"/>
+<circle cx="307" cy="174" r="3" fill="#FFF4D5"/><circle cx="453" cy="174" r="3" fill="#FFF4D5"/>
+<path d="M324 253c15-23 106-23 122 0 8 12-5 68-60 70-55-2-70-58-62-70Z" fill="#E9C28B"/>
+<path d="m369 248 17-8 18 8-18 15Z" fill="#3A2017"/>
+<path d="M386 262v13m0 0c-11 13-25 14-39 3m39-3c11 13 25 14 39 3" fill="none" stroke="#4A2A1C" stroke-width="5" stroke-linecap="round"/>
+<g fill="none" stroke="#2A1711" stroke-width="11" stroke-linecap="round" opacity=".72"><path d="M280 138c18 17 42 22 65 24M489 138c-18 17-42 22-65 24M233 227c37 14 70 14 95 1M543 227c-37 14-70 14-95 1"/></g>
+<g fill="none" stroke="#EAC692" stroke-width="3" stroke-linecap="round" opacity=".82"><path d="M333 269 187 247m147 39-157 13m258-30 147-22m-148 39 158 14"/></g>
+<path d="M306 386c-17 85-44 159-38 232m196-232c16 85 43 159 37 232" fill="none" stroke="#7D3E1F" stroke-width="18" stroke-linecap="round" opacity=".75"/>
+<path d="M304 401c-9 41-17 66-27 91m203-91c9 41 17 66 27 91" fill="none" stroke="#2D1A12" stroke-width="10" stroke-linecap="round" opacity=".62"/>
+<path d="M333 359c25 24 80 27 108 0" fill="none" stroke="#21140D" stroke-width="9" stroke-linecap="round"/>
+<circle cx="387" cy="405" r="39" fill="#0D0F12" stroke="#D6883B" stroke-width="6"/>
+<path d="M362 391v29h9v-16l16 20 16-20v16h9v-29h-10l-15 19-15-19Z" fill="#D6883B"/>
+</svg>

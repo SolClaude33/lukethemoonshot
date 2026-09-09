@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Monero Cat mark</title><desc id="desc">An original orange cat face shaped like a Monero M.</desc>
+  <defs><linearGradient id="fur" x1="8" y1="8" x2="54" y2="58" gradientUnits="userSpaceOnUse"><stop stop-color="#F0C27D"/><stop offset=".5" stop-color="#D78A3D"/><stop offset="1" stop-color="#A85B25"/></linearGradient></defs>
+  <path d="M8 24 13 6l14 11h10L51 6l5 18v15c0 12-10 21-24 21S8 51 8 39Z" fill="url(#fur)"/>
+  <path d="m14 20 3-8 7 7-6 4Zm36 0-3-8-7 7 6 4Z" fill="#4A2C1C"/>
+  <path d="M17 31h9v4h-9Zm21 0h9v4h-9Z" fill="#101216"/>
+  <circle cx="21.5" cy="33" r="1.4" fill="#F6E5C8"/><circle cx="42.5" cy="33" r="1.4" fill="#F6E5C8"/>
+  <path d="m29 40 3-2 3 2-3 3Z" fill="#20150F"/>
+  <path d="M18 44h8l6 8 6-8h8v9h-6v-4l-8 10-8-10v4h-6Z" fill="#101216"/>
+  <path d="M9 37H1m54 0h8M10 41l-8 3m52-3 8 3" stroke="#E9B66E" stroke-width="2" stroke-linecap="round"/>
+</svg>
